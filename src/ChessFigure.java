@@ -4,15 +4,14 @@ import java.util.ArrayList;
 
 public interface ChessFigure {
     Image getImageFigure();
-    int getXp();
-    int getYp();
+    int getXPosition();
+    int getYPosition();
     boolean getIsWhite();
-    void setXp(int x);
-    void setYp(int y);
+    void setXPosition(int x);
+    void setYPosition(int y);
     void move(int x, int y);
-    void kill();
-    int[] getCoord();
-    int[] getLastCoord();
-    void setLastCoord(int x, int y);
+    CoordOnField getCoordOnField();
+    void setCoordOnField(int x, int y);
+
 
 }

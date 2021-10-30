@@ -6,9 +6,9 @@ public class Logics {
     public static ArrayList<int[]> chessCoords = new ArrayList<>(32);
     public static boolean isEmpty(){
         chessCoords.clear();
-        for (ChessFigure figure: ChessGame.figures){
-            chessCoords.add(figure.getCoord());
-        }
+//        for (ChessFigure figure: ChessGame.figures){
+//            chessCoords.add(figure.getCoord());
+//        }
         for (int i = 0; i < chessCoords.size(); i++) {
             for (int j = i + 1; j < chessCoords.size(); j++) {
                 if (Arrays.equals(chessCoords.get(i), chessCoords.get(j))) {
