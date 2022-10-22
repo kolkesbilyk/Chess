@@ -33,6 +33,8 @@ public class ChessGame extends JFrame {
     }
     public static List<ChessFigure> figures = new ArrayList<>(items.values());
     public static Set<CoordOnField> coord = items.keySet();
+    public static int pressXPosition;
+    public static int pressYPosition;
     JPanel panel;
     private static final int IMAGE_SIZE = 64;
     public static String[][] chessBoard = new String[8][8];
@@ -69,7 +71,7 @@ public class ChessGame extends JFrame {
                     g.drawImage(figure.getImageFigure(), figure.getXPosition() * IMAGE_SIZE,
                             figure.getYPosition() * IMAGE_SIZE, this);
                 }
-                System.out.println(coord);
+                //System.out.println(coord);
             }
         };
         panel.addMouseListener(new MouseListener() {
@@ -84,14 +86,15 @@ public class ChessGame extends JFrame {
                         .getIsWhite()? "white " : "black ") + getFigure(e.getX(), e.getY())
                         .getClass().getSimpleName() + " " + chessBoard[e.getX() / 64][e.getY() / 64] + " "
                         + getFigure(e.getX(), e.getY()).getCoordOnField());
+                pressXPosition = e.getX() / 64;
+                pressYPosition = e.getY() / 64;
                 selectFigure = getFigure(e.getX(), e.getY());
                 repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                selectFigure.setXPosition(e.getX());
-                selectFigure.setYPosition(e.getY());
+                selectFigure.moveFigure(e.getX() / 64, e.getY() / 64, pressXPosition, pressYPosition, items);
                 repaint();
             }
 
@@ -106,11 +109,10 @@ public class ChessGame extends JFrame {
             }
         });
         panel.addMouseMotionListener(new MouseMotionListener() {
-            @Override
+            @Override   //зажата ліва клавіша
             public void mouseDragged(MouseEvent e) {
                 if (selectFigure != null){
-                    selectFigure.setXPosition(e.getX());
-                    selectFigure.setYPosition(e.getY());
+                    selectFigure.moveFigure(e.getX(), e.getY(), pressXPosition, pressYPosition, items);
                     repaint();
                 }
             }
@@ -138,7 +140,7 @@ public class ChessGame extends JFrame {
 
     public Image getIMage(String name) {
         String filename = "img/" + name.toLowerCase() + ".png";
-        ImageIcon icon = new ImageIcon(getClass().getResource(filename));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(filename)));
         return icon.getImage();
     }
     public static ChessFigure getFigure(int x, int y){

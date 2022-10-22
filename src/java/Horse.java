@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Horse extends Figure{
 
@@ -10,5 +11,10 @@ public class Horse extends Figure{
     @Override
     public Image getImageFigure() {
         return getIsWhite() == true? (Image) Items.HORSEWHITE.image : (Image) Items.HORSEBLACK.image;
+    }
+
+    @Override
+    public boolean isFigurePresentBetweenPosition(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, Map<CoordOnField, ChessFigure> items) {
+        return false;
     }
 }

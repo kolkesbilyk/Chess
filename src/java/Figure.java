@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.util.Arrays;
+import java.util.Map;
 
 public abstract class Figure implements ChessFigure {
     private int xPosition;
@@ -20,21 +20,29 @@ public abstract class Figure implements ChessFigure {
         return xPosition;
     }
     public void setXPosition(int x) {
-        this.xPosition = x / 64;
+        this.xPosition = x;
     }
     public int getYPosition() {
         return yPosition;
     }
     public void setYPosition(int y) {
-        this.yPosition = y / 64;
+        this.yPosition = y;
     }
     @Override
     public boolean getIsWhite() {
         return this.isWhite;
     }
-    @Override
-    public void move(int x, int y) {
 
+    @Override
+    public void moveFigure(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, Map<CoordOnField, ChessFigure> items){
+        boolean isFigurePresentBetweenPosition = isFigurePresentBetweenPosition(newXPosition, newYPosition, lastXPosition, lastYPosition, items);
+        if (newXPosition < 8 && newXPosition >= 0 && newYPosition >= 0 && newYPosition < 8){
+            move(newXPosition, newYPosition, lastXPosition, lastYPosition, isFigurePresentBetweenPosition);
+        }
+    }
+    public void move(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, boolean isFigurePresentBetweenPosition) {
+        setXPosition(newXPosition);
+        setYPosition(newYPosition);
     }
 
     @Override
@@ -47,4 +55,5 @@ public abstract class Figure implements ChessFigure {
         this.coordOnField = new CoordOnField(xPosition, yPosition);
     }
 
+    public abstract boolean isFigurePresentBetweenPosition(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, Map<CoordOnField, ChessFigure> items);
 }
