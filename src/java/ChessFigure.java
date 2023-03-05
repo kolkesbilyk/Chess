@@ -1,17 +1,16 @@
-import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
 public interface ChessFigure {
     Image getImageFigure();
     int getXPosition();
     int getYPosition();
-    boolean getIsWhite();
+    FigureColor getFigureColor();
     void setXPosition(int x);
     void setYPosition(int y);
-    void moveFigure(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, Map<CoordOnField, ChessFigure> items);
-    CoordOnField getCoordOnField();
-    void setCoordOnField(int x, int y);
+    boolean moveFigure(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, List<ChessFigure> items, List<ChessFigure> selectFigures);
+    boolean canKill(int newXPosition,
+                    int newYPosition,
+                    int lastXPosition,
+                    int lastYPosition);
 }

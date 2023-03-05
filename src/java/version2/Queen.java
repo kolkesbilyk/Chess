@@ -1,15 +1,13 @@
+package version2;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Queen extends Figure{
+public class Queen extends ChessFigure{
+
     public Queen(int x, int y, FigureColor figureColor) {
         super(x, y, figureColor);
-    }
-
-    @Override
-    public boolean canKill(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition) {
-        return false;
     }
 
     @Override
@@ -18,34 +16,32 @@ public class Queen extends Figure{
     }
 
     @Override
-    public boolean move(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, boolean isFigurePresentBetweenPosition) {
+    protected boolean canKill(ChessList chessList, boolean canMove) {
+        return canMove;
+    }
+
+    @Override
+    protected boolean canMove(CoordOnField newCoord, boolean isFigurePresentBetweenPosition) {
+        int lastYPosition = getCoord().getyP();
+        int lastXPosition = getCoord().getXp();
+        int newXPosition = newCoord.getXp();
+        int newYPosition = newCoord.getyP();
+
         if (Math.abs(newXPosition - lastXPosition) == Math.abs(newYPosition - lastYPosition) && !isFigurePresentBetweenPosition){
-            setXPosition(newXPosition);
-            setYPosition(newYPosition);
+            return true;
         }else if (lastXPosition == newXPosition && !isFigurePresentBetweenPosition){
-            setYPosition(newYPosition);
-        }else if (lastYPosition == newYPosition && !isFigurePresentBetweenPosition){
-            setXPosition(newXPosition);
-        }else return false;
-        return true;
-    }
-    @Override
-    public void moveToKill(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, boolean isFigurePresentBetweenPosition) {
-        move(newXPosition, newYPosition, lastXPosition, lastYPosition, isFigurePresentBetweenPosition);
+            return true;
+        }else
+            return lastYPosition == newYPosition && !isFigurePresentBetweenPosition;
     }
 
     @Override
-    public boolean isFigurePresentBetweenPosition(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition, List<ChessFigure> items) {
-        List<CoordOnField> coords = getCoordsOnTheWay(newXPosition, newYPosition, lastXPosition, lastYPosition);
-        if (!coords.isEmpty()){
-            ChessFigure chessFigure = getFigure(coords, items);
-            return chessFigure != null;
-        }
-        return false;
-    }
+    protected List<CoordOnField> getCoordsOnTheWay(CoordOnField newCoord) {
+        int lastYPosition = getCoord().getyP();
+        int lastXPosition = getCoord().getXp();
+        int newXPosition = newCoord.getXp();
+        int newYPosition = newCoord.getyP();
 
-    @Override
-    public List<CoordOnField> getCoordsOnTheWay(int newXPosition, int newYPosition, int lastXPosition, int lastYPosition) {
         List<CoordOnField> coords = new ArrayList<>();
         if (Math.abs(newXPosition - lastXPosition) > 1 || Math.abs(newYPosition - lastYPosition) > 1) {
             if (newXPosition == lastXPosition) {
@@ -64,7 +60,7 @@ public class Queen extends Figure{
                 }
                 int index = 0;
                 for (int i = lastYPosition;newYPosition > lastYPosition ? i < newYPosition : i > newYPosition;) {
-                    coords.get(index).setyPosition(i);
+                    coords.get(index).setyP(i);
                     index++;
                     if (newYPosition > lastYPosition) i++;
                     else i--;
